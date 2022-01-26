@@ -1,5 +1,5 @@
 #include "clove.h"
-#include "../bomberman.h"
+#include "..\..\include\bomberman.h"
 
 
 

@@ -1,6 +1,6 @@
-#include <SDL.h>
-#include "bomberman.h"
-#include "level001.h"
+#include "SDL.h"
+#include "..\include\bomberman.h"
+#include "..\include\level001.h"
 
 int main(int argc, char **argv)
 {

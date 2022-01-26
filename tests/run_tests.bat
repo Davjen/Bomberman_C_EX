@@ -1,1 +1,1 @@
-clang.exe -o tests.exe .\main.c ..\level.c ..\movable.c && tests.exe
+clang.exe -o tests.exe .\src\main.c ..\src\level.c ..\src\movable.c && tests.exe
