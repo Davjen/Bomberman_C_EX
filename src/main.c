@@ -1,40 +1,51 @@
 #include "SDL.h"
 #include "..\include\bomberman.h"
 #include "..\include\level001.h"
+#include "..\include\parse_bmp.h"
+#include "..\include\usefull_scripts.h"
 
 int main(int argc, char **argv)
 {
-
+ 
     level_t level001;
     level_init(&level001, 8, 8, 64, level001_cells);
-
+ 
     bomberman_t player0;
     player0.movable.x = 100;
     player0.movable.y = 100;
     player0.movable.width = 32;
     player0.movable.height = 32;
     player0.movable.speed = 48;
-
+ 
     SDL_Init(SDL_INIT_VIDEO);
-
+ 
     SDL_Window *window = SDL_CreateWindow("Bomberman",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
                                           level001.cols * level001.cell_size,
                                           level001.rows * level001.cell_size,
                                           0);
-
+ 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
+    SDL_Texture *texture;
+    Uint8 *img_data;
+
+    Usfllfuc_Open_File("Capture.bmp","rb",&img_data);
+   
+
+    Bomberman_Create_Texture(img_data,3,renderer,&texture);
+        
+ 
     SDL_Rect cell_rect = {0, 0, level001.cell_size, level001.cell_size};
-
+ 
     SDL_Rect player0_rect = {0, 0, player0.movable.width, player0.movable.height};
-
+ 
     float delta_right = 0;
     float delta_left = 0;
     float delta_down = 0;
     float delta_up = 0;
-
+ 
     int running = 1;
     while (running)
     {
@@ -82,10 +93,8 @@ int main(int argc, char **argv)
                 }
             }
         }
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-        SDL_RenderClear(renderer);
-
+ 
+ 
         for (uint32_t row = 0; row < level001.rows; row++)
         {
             for (uint32_t col = 0; col < level001.cols; col++)
@@ -94,7 +103,7 @@ int main(int argc, char **argv)
                 int32_t cell_texture = cell & 0xff;
                 cell_rect.x = col * level001.cell_size;
                 cell_rect.y = row * level001.cell_size;
-
+ 
                 if (cell_texture == BLOCK_GROUND)
                 {
                     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
@@ -112,16 +121,15 @@ int main(int argc, char **argv)
                 }
             }
         }
-
+ 
         move_on_level(&level001, &player0.movable, delta_right + delta_left, delta_down + delta_up);
         player0_rect.x = player0.movable.x;
         player0_rect.y = player0.movable.y;
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderFillRect(renderer, &player0_rect);
 
-        SDL_RenderPresent(renderer);
+         SDL_RenderCopy(renderer,texture,NULL,&player0_rect);
+         SDL_RenderPresent(renderer);
     }
-
-    SDL_Quit();
+ 
+	SDL_Quit();
     return 0;
 }
