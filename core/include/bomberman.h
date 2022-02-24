@@ -2,6 +2,7 @@
 #define BOMBERMAN_H
 
 #include <stdint.h>
+#include <SDL.h>
 
 #define BLOCK_MASK_UNWALKABLE 0x0100
 #define BLOCK_MASK_TELEPORT 0x0200
@@ -28,16 +29,30 @@ typedef struct movable
     float speed;
 } movable_t;
 
+typedef struct drawable{
+
+    SDL_Rect rect;
+    SDL_Texture *texture;
+
+}drawable_t;
 // try moving an object on the level
 int32_t move_on_level(level_t* level, movable_t* movable, const float delta_x, const float delta_y);
 
 typedef struct bomberman
 {
+    
     movable_t movable;
+    drawable_t drawable;
     uint32_t number_of_bombs;
     uint32_t dropped_bombs;
     uint32_t bomb_power;
+    
 } bomberman_t;
+
+extern bomberman_t local_player;
+extern bomberman_t remote_player;
+extern bomberman_t player0;
+extern bomberman_t player1;
 
 // initialize a level structure
 int level_init(level_t *level, const uint32_t cols, const uint32_t rows, const uint32_t cell_size, int32_t *cells);

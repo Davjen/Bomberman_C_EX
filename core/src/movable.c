@@ -1,4 +1,4 @@
-#include "..\include\bomberman.h"
+#include "bomberman.h"
 
 int32_t move_on_level(level_t *level, movable_t *movable, const float delta_x, const float delta_y)
 {
